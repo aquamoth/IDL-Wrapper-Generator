@@ -1,6 +1,6 @@
 ﻿<#
 
-	var RootPath = @"..\Demo";
+	var SourcePath = @"..\Demo";
 	var OutputPath = @"..\Demo\Output";
   
 #>

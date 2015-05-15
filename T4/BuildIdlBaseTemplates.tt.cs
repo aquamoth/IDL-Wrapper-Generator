@@ -28,12 +28,12 @@ public class BuildIdlBaseTemplates
 		this.helper = helper;
 	}
 
-	public void processAll(string relativeRootPath, string relativeOutputPath)
+	public void processAll(string relativeSourcePath, string relativeOutputPath)
 	{
-		var rootPath = helper.resolvePath(templateFile, relativeRootPath);
+		var sourcePath = helper.resolvePath(templateFile, relativeSourcePath);
 		var outputPath = helper.resolvePath(templateFile, relativeOutputPath);
 
-		var allIdlFiles = Directory.GetFiles(rootPath, "*.idl", SearchOption.AllDirectories);
+		var allIdlFiles = Directory.GetFiles(sourcePath, "*.idl", SearchOption.AllDirectories);
 		WriteLine("Found {0} idl files in solution directory.", allIdlFiles.Count());
 
 		helper.registerIdlEnumsAsUnreferencedTypes(allIdlFiles);

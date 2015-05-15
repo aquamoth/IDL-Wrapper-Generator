@@ -25,6 +25,6 @@
 Starting at <#= DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") #>
 <# 
 	var runner = new BuildIdlProxy(Host.TemplateFile);
-	runner.processAll(RootPath, OutputPath); 
+	runner.processAll(SourcePath, OutputPath); 
 #>
 Finished at <#= DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") #>
