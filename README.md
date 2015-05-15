@@ -11,5 +11,20 @@ The generated proxy objects fixes the plumbing of the calls, converts parameters
 ###It's not that you can't do this yourself
 It's that the business logic in your own code gets so much more readable then you get all this COM-pumbing out of the way!
 
-#How to use the templates
+##Project components
 The IDL-Wrapper-Generator packages its two main T4 templates, **BuildIdlProxies.tt** and **BuildIdlBaseTemplates.tt**, together with some helper files and wraps it all up in a C#-project.
+
+To test-drive the T4 templates and properly unit test them, they are split into a "view" (which is the acual *.tt*-file) and a *code-behind* (which is called *.tt.cs*). The unit tests are included in the folder called *Unit Tests*.
+
+Included in the project is also a *Demo* folder in which a demo IDL file is included. You ware free to change this file or add adjacent IDL-files to see the templates at work. As long as the original configuration file isn't changed, the resulting proxies and base templates can be seen in the *Output* folder.
+
+The templates are automatically run every time the project is rebuilt.
+
+##How to use the templates with your production code
+Start by downloading this project and add it to your existing solution.
+- Edit the file *BuildIdl.tt*;
+  -   Change the SourcePath to a path from which the generator shall search for IDL-files to wrap.
+  -   Change the OutputPath to the destination where the generated c++-files shall be written.
+-   Build the project to generate the wrappers.
+-   Make a reference to the file *Ref.h*, which is found in the *Demo*-folder.
+-   Replace your current references to your IDLs generated outputs with those of the proxies or base templates. You only need to reference one of them.
