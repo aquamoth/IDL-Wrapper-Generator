@@ -1,0 +1,8 @@
+﻿////
+//
+/*
+ * C:\Users\maas\Workspace\Git\IDL-Wrapper-Generator\T4\BuildIdlBaseTemplates.tt code generation report
+ */
+ 
+Starting at 2015-05-15 14:13:53
+Finished at 2015-05-15 14:13:53

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5FA6D7F4-A554-4656-8E58-B60FEEF3225C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IDL_Wrapper_Generator</RootNamespace>
+    <AssemblyName>IDL-Wrapper-Generator</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NOT_IN_T4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Demo\Output\DemoBase.h" />
+    <Content Include="Demo\Output\DemoProxy.h" />
+    <Content Include="Demo\Ref.h" />
+    <Content Include="Demo\Demo.idl" />
+    <Content Include="UnitTests.idl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="T4\BuildIdl.tt">
+      <LastGenOutput>BuildIdl.cs</LastGenOutput>
+      <!--<Parameters>
+        &lt;%3fxml version="1.0" encoding="utf-16"%3f&gt;
+        &lt;ArrayOfParameterStorage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;
+      </Parameters>-->
+    </None>
+    <Compile Include="T4\Helpers.tt.cs" />
+    <Compile Include="Unit Tests\TestBuildIdlBaseTemplates.cs" />
+    <Compile Include="Unit Tests\TestBuildIdlProxies.cs" />
+    <Compile Include="Unit Tests\TestIdlHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="T4\BuildIdlProxies.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BuildIdlProxies.txt</LastGenOutput>
+      <TransformOnBuild>True</TransformOnBuild>
+    </None>
+    <Compile Include="T4\BuildIdlProxies.tt.cs">
+      <AutoGen>False</AutoGen>
+      <DesignTime>False</DesignTime>
+      <DependentUpon>BuildIdlProxies.tt</DependentUpon>
+    </Compile>
+    <Content Include="T4\BuildIdlProxies.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BuildIdlProxies.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="T4\BuildIdlBaseTemplates.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BuildIdlBaseTemplates.txt</LastGenOutput>
+      <TransformOnBuild>True</TransformOnBuild>
+    </None>
+    <Compile Include="T4\BuildIdlBaseTemplates.tt.cs">
+      <AutoGen>False</AutoGen>
+      <DesignTime>False</DesignTime>
+      <DependentUpon>BuildIdlBaseTemplates.tt</DependentUpon>
+    </Compile>
+    <Content Include="T4\BuildIdlBaseTemplates.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BuildIdlBaseTemplates.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

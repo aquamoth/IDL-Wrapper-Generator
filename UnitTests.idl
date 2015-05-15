@@ -1,0 +1,188 @@
+import "oaidl.idl";
+import "ocidl.idl";
+import "MxFrameworkInterfaces.idl";
+
+interface IMxSystemPaths;
+interface IMxLog;
+
+[
+	oleautomation,
+	uuid(7BC5C8A4-B059-499e-8436-F00229C0A1A1),
+	pointer_default(unique)
+]
+interface IMxCollection : IUnknown
+{
+	[propget]	HRESULT Length						( [out,retval] long* pVal );
+	[propget]	HRESULT Begin						( [out,retval] long* pVal );
+	[propget]	HRESULT End							( [out,retval] long* pVal );
+	[propget]	HRESULT IsEmpty						( [out,retval] VARIANT_BOOL* pVal );
+};
+
+/*
+ * This is a multiline comment
+ */
+[
+	oleautomation,
+	uuid(F882B729-7149-4EC2-88C9-7C7A7D81069B),
+	pointer_default(unique)
+]
+interface IMxQueue : IUnknown
+{
+	[propget]	HRESULT Size						( [out,ref,retval] long* pVal ); //This is a singleline comment
+	[propget]	HRESULT WriteCount					( [out,ref,retval] long* pVal );
+	[propget]	HRESULT ReadCount					( [out,ref,retval] long* pVal );
+				HRESULT Close						();
+};
+
+[
+	oleautomation,
+	uuid(78920B3C-EFED-4304-B799-5DD1D10386E4),
+	pointer_default(unique)
+]
+interface IMxFrameTracker : IUnknown
+{
+				HRESULT Begin						( REFIID frame, [in] BSTR componentName, [in] BSTR componentVersion, [out, retval] int* pKey );
+				HRESULT Write						( [in] int session, [in] BSTR key, [in] BSTR value );
+				HRESULT Commit						( [in] int session );
+				HRESULT Rollback					( [in] int session );
+};
+
+[
+	oleautomation,
+	uuid(C1735F0F-5E17-49DD-BBED-75223DB927A9),
+	pointer_default(unique)
+]
+interface IMxModuleId : IUnknown
+{
+	[propget]	HRESULT SourceComputer				( [out,ref,retval] BSTR* pComputer );
+	[propget]	HRESULT SourceProcess				( [out,ref,retval] BSTR* pProcess );
+	[propget]	HRESULT SourceModule				( [out,ref,retval] BSTR* pModule );
+};
+
+typedef [uuid(2C9F62FE-E867-471A-8D22-6267A14437DC), v1_enum]
+enum ESeverity
+{
+	ESeverityUndefined,
+	ESeverityUnrecoverable,
+	ESeverityRestartRecoverable,
+	ESeverityReloadRecoverable,
+	ESeverityRetry
+} ESeverity;
+
+typedef [uuid(8CAC8ED4-5D02-4C1B-A850-154718E6E8F0), v1_enum]
+enum ELogType
+{
+	ELogTypeUndefined,
+	ELogTypeError,
+	ELogTypeWarning,
+	ELogTypeEvent,
+	ELogTypeTrace
+} ELogType;
+
+typedef [uuid(4AC56616-7A0A-4CE3-AB9C-3D6E2FE02D3D), v1_enum]
+enum ETraceLevel
+{
+	ETraceLevelNone,
+	ETraceLevelLow,
+	ETraceLevelMedium,
+	ETraceLevelHigh,
+	ETraceLevelExtreme,
+	ETraceLevelAll
+} ETraceLevel;
+
+typedef [uuid(D276D70D-11CA-4041-BE50-8E0E8626ACA3), v1_enum] enum EMxFrameWorkErrorCode
+{
+	BUILDER_EXHAUSTED = 0x80041001,
+	PROTOTYPE_MISMATCH,
+	TIMEOUT,
+	CANCELED,
+	ARGUMENT_NOT_UNIQUE,
+	WRONG_STATE,
+	INVALID_STATE_TRANSITION,
+	XX_DEPRECATED_FAIL_RETRY_OK,
+	BUSY,
+	UC_NOT_PREPARED,
+	LOGFILE_COMMENT_ERROR
+} EMxFrameWorkErrorCode;
+
+[
+	oleautomation,
+	uuid(2E394149-9A53-41D9-A7A5-992421E81304),
+	pointer_default(unique)
+]
+interface IMxLogValue : IUnknown
+{
+	[propget]	HRESULT Id							( [out,ref,retval] GUID* pid );
+	[propget]	HRESULT LoggTime					( [out,ref,retval] __int64* time );
+	[propget]	HRESULT LoggerSource				( [out,ref,retval] IMxModuleId** pSource );
+	[propget]	HRESULT Description					( [out,ref,retval] BSTR* description );
+	[propget]	HRESULT LogType						( [out,ref,retval] ELogType* type );
+
+				HRESULT AddDescription				( [in] BSTR description );
+};
+
+[
+	oleautomation,
+	uuid(AB1644FE-CF96-4CE0-9D0F-452876733757),
+	pointer_default(unique)
+]
+interface IMxLogErrorValue : IMxLogValue
+{
+	[propget]	HRESULT SourceFileLine				( [out,ref,retval] BSTR* pFile );
+	[propget]	HRESULT ErrorCode					( [out,ref,retval] long* code );
+	[propget]	HRESULT Severity					( [out,ref,retval] ESeverity* code );
+};
+
+[
+	oleautomation,
+	uuid(4FC167F1-6CBB-4229-972D-5AAEDFA27D2B),
+	pointer_default(unique)
+]
+interface IMxLogEventValue : IMxLogValue
+{
+	[propget]	HRESULT EventCode					( [out,ref,retval] long* eventCode );
+};
+
+[
+	oleautomation,
+	uuid(D127F1BC-E399-4340-A0B9-0FBD13118B11),
+	pointer_default(unique)
+]
+interface IMxLogTraceValue : IMxLogValue
+{
+	[propget]	HRESULT TraceLevel					( [out,ref,retval] ETraceLevel* level );
+	[propget]	HRESULT SourceFileLine				( [out,ref,retval] BSTR* pFile );
+};
+
+[
+	oleautomation,
+	uuid(1E950E41-4C28-4E4D-BC5E-F48EBA442827),
+	pointer_default(unique)
+]
+interface IMxLog : IUnknown
+{
+				HRESULT LogError					( [in] BSTR pAppName, [in] long errorCode, [in] ESeverity severity, [in] BSTR pFileLine, [in] BSTR pFunction, [in] BSTR pDescription );
+				HRESULT LogWarning					( [in] BSTR pAppName, [in] long code, [in] ESeverity severity, [in] BSTR pFileLine, [in] BSTR pFunction, [in] BSTR pDescription );
+				HRESULT LogTrace					( [in] BSTR pAppName, [in] ETraceLevel TraceLevel, [in] BSTR pFileLine, [in] BSTR pFunction, [in] BSTR pDescription );
+};
+
+[
+	oleautomation,
+	uuid(13970C6D-CE03-4AC2-8624-AF2AC63D775A),
+	pointer_default(unique)
+]
+interface IMxSystemPaths : IUnknown
+{
+	[propget]	HRESULT DataRootDirectory				( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT LogFileDirectory				( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT ConfigDirectory					( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT ConfigBinaryDataDirectory		( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT BinaryDataDirectory				( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT FrameValueDirectory				( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT LineCalibrationDirectory		( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT ReferenceCalibrationDirectory	( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT VolumeCalibrationDirectory		( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT StatisticsDirectory				( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT EventsDirectory					( [out,ref,retval] BSTR* pVal );
+	[propget]	HRESULT MeasurementsDirectory			( [out,ref,retval] BSTR* pVal );
+};
